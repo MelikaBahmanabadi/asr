@@ -87,16 +87,16 @@ The Iran Mercantile Exchange handles a high volume of customer support calls. Th
 ```
 asr/
 │
-├── asr.ipynb                    # Main pipeline: Whisper + LLM correction
+├── asr.py                       # Main pipeline: Whisper + LLM correction
 │                                #   ├─ Whisper Small (HF transformers)
 │                                #   ├─ Whisper Medium (.pt via openai-whisper)
 │                                #   └─ Whisper Large v3 Turbo (.bin via pywhispercpp)
 │
-├── gemma-asr.ipynb              # Gemma 4 multimodal ASR (direct audio → text)
+├── gemma-asr.py                 # Gemma 4 multimodal ASR (direct audio → text)
 │
-├── similarity.ipynb             # Evaluation: FuzzyWuzzy + Semantic similarity
+├── similarity.py                # Evaluation: FuzzyWuzzy + Semantic similarity
 │
-├── parquet_file_test.ipynb      # Evaluation on parquet datasets (WER/CER)
+├── parquet_file_test.py         # Evaluation on parquet datasets (WER/CER)
 │
 ├── README.md                    # This document
 │
@@ -298,11 +298,11 @@ For datasets with ground-truth transcriptions (e.g., SanayAI podcast dataset).
 ```
 input_csv (raw ASR + LLM output)
     │
-    ├─→ similarity.ipynb
+    ├─→ similarity.py
     │     ├─ FuzzyWuzzy Levenshtein
     │     └─ Semantic Similarity (sentence-transformers)
     │
-    └─→ parquet_file_test.ipynb
+    └─→ parquet_file_test.py
           ├─ WER (jiwer)
           └─ CER (jiwer)
 ```
@@ -369,27 +369,27 @@ OLLAMA_MODEL = "gemma-4-E4b-it:latest"
 
 ## 9. Usage
 
-### 9.1 Transcription Pipeline (asr.ipynb)
+### 9.1 Transcription Pipeline (asr.py)
 
 1. Place `.wav` audio files in `records/`
-2. Open `asr.ipynb`
+2. Run `python3 asr.py`
 3. Run the cell for your chosen ASR model variant
 4. Output saved to CSV with columns: `filename`, `transcription`, `llm_output`
 
-### 9.2 Gemma Direct ASR (gemma-asr.ipynb)
+### 9.2 Gemma Direct ASR (gemma-asr.py)
 
 1. Requires Gemma 4 multimodal model locally
 2. Feed audio files directly — no separate ASR step
 3. Produces transcriptions without Whisper dependency
 
-### 9.3 Evaluation (similarity.ipynb)
+### 9.3 Evaluation (similarity.py)
 
 1. Requires CSV output from the transcription pipeline
 2. Run FuzzyWuzzy/Levenshtein similarity
 3. Run semantic similarity
 4. Output: CSV with similarity scores per file
 
-### 9.4 Parquet Evaluation (parquet_file_test.ipynb)
+### 9.4 Parquet Evaluation (parquet_file_test.py)
 
 1. Place parquet dataset in project directory
 2. Runs Gemma 4 multimodal directly on audio (no ASR model) — numpy arrays are downsampled to 16kHz and fed to the LLM
